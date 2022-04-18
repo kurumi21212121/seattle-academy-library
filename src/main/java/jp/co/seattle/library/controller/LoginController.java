@@ -52,7 +52,9 @@ public class LoginController {
         	model.addAttribute("errorMessage","ログインできません");
       	return "login";
         }else {
+        	model.addAttribute("bookList", booksService.getBookList());
         	return "home";
+        	
         }
 
     }
