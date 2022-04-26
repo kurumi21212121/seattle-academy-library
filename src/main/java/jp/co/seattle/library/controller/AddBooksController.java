@@ -1,5 +1,6 @@
 package jp.co.seattle.library.controller;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -16,6 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.service.BooksService;
 import jp.co.seattle.library.service.ThumbnailService;
+
+
+
+
 
 /**
  * Handles requests for the application home page.
@@ -53,6 +58,9 @@ public class AddBooksController {
             @RequestParam("author") String author,
             @RequestParam("publisher") String publisher,
             @RequestParam("thumbnail") MultipartFile file,
+            @RequestParam("publishDate") String publishDate,
+            @RequestParam("isbn") String isbn,
+            @RequestParam("descripsion") String descripsion,
             Model model) {
         logger.info("Welcome insertBooks.java! The client locale is {}.", locale);
 
@@ -61,7 +69,9 @@ public class AddBooksController {
         bookInfo.setTitle(title);
         bookInfo.setAuthor(author);
         bookInfo.setPublisher(publisher);
-
+        bookInfo.setPublishDate(publishDate);
+        bookInfo.setIsbn(isbn);
+        bookInfo.setDescripsion(descripsion);
         // クライアントのファイルシステムにある元のファイル名を設定する
         String thumbnail = file.getOriginalFilename();
 
@@ -83,17 +93,58 @@ public class AddBooksController {
                 return "addBook";
             }
         }
-
-        // 書籍情報を新規登録する
-        booksService.registBook(bookInfo);
-
-        model.addAttribute("resultMessage", "登録完了");
-
-        // TODO 登録した書籍の詳細情報を表示するように実装
+              
+       //ArrayListを準備
+      ArrayList<String>lists=new ArrayList<String>();
       
-       
-        //  詳細画面に遷移する
-        return "details";
-    }
+    
+       if(title.isEmpty() || author.isEmpty() || publisher.isEmpty() ||  publishDate.isEmpty()) {
+    	  lists.add ("必須");
+    	  
+    	 } 
+       if( publishDate.isEmpty()|| publishDate.length()!=8 || !(publishDate.matches ("^[0-9]*$"))) {
+    		  lists.add ("出版日は半角数字のYYMMDD形式で入力してください");
 
+      } 
+      
+       if(isbn.length()!=10 && isbn.length()!=13 && isbn.length() !=0 || !(isbn.matches("^[0-9]*$"))){
+    	  lists.add ("ISBNの桁数または半角数字が正しくありません");
+    	  }
+       
+       if(lists.isEmpty())
+          {
+    	   
+    	   booksService.registBook(bookInfo);
+    	   int bookId = booksService.getMaxbookid();
+    	    BookDetailsInfo bookDetailsInfo=booksService.getBookInfo(bookId);
+    	   
+
+           model.addAttribute("bookDetailsInfo",bookDetailsInfo);
+          
+           
+    	   }else {
+    		   model.addAttribute("error", lists);
+    		   model.addAttribute("bookInfo",bookInfo);
+    		   return "addBook";
+    	   }
+     
+       return "details";
+      
+    	  
+      }
+    	  
+      
+     
+
+        
+    
+
+      
+        
+       
+       
+       
+  
 }
+
+

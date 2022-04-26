@@ -48,7 +48,8 @@
                             <ul>
                                 <li class="book_title">${bookInfo.title}</li>
                                  <li class="book_author">${bookInfo.author}(著)</li>
-                                  <li class="book_publisher">出版社：${bookInfo.publisher}</li>
+                                  <li class="book_publisher">：${bookInfo.publisher}</li>
+                                   
                             </ul>
                         </div>
                     </c:forEach>
