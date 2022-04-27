@@ -97,9 +97,10 @@ public class AddBooksController {
        //ArrayListを準備
       ArrayList<String>lists=new ArrayList<String>();
       
-    //登録条件
+    //バリデーションチェック
+      
        if(title.isEmpty() || author.isEmpty() || publisher.isEmpty() ||  publishDate.isEmpty()) {
-    	  lists.add ("必須");
+    	  lists.add ("入力必須項目があります");
     	  
     	 } 
        if( publishDate.isEmpty()|| publishDate.length()!=8 || !(publishDate.matches ("^[0-9]*$"))) {
