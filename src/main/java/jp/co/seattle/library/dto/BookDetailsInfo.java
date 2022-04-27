@@ -12,30 +12,40 @@ import lombok.Data;
 @Data
 public class BookDetailsInfo {
 
-    private int bookId;
+    private int  bookId;
 
     private String title;
 
     private String author;
 
     private String publisher;
+    
+    private String publishDate;
 
     private String thumbnailUrl;
 
     private String thumbnailName;
+    
+    private String isbn;
+    
+    private String descripsion;
 
     public BookDetailsInfo() {
 
     }
 
     public BookDetailsInfo(int bookId, String title, String author, String publisher,
-            String thumbnailUrl, String thumbnailName) {
+            String publishDate,String thumbnailUrl, String thumbnailName, String descripsion,String isbn) {
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.publisher = publisher;
+        this.publishDate = publishDate;
         this.thumbnailUrl = thumbnailUrl;
         this.thumbnailName = thumbnailName;
+        this.descripsion = descripsion; 
+        this.isbn = isbn;
+        
     }
 
 }

@@ -54,7 +54,19 @@
                 </div>
                 <div>
                     <span>出版社</span>
-                    <p>${bookDetailsInfo.publisher}</p>
+                    <p>${bookDetailsInfo.publisher}</p>           
+                </div>
+                 <div>
+                    <span>出版日</span>
+                    <p>${bookDetailsInfo.publishDate}</p>
+                </div>
+                 <div>
+                    <span>ISBN</span>
+                    <p>${bookDetailsInfo.isbn}</p>
+                </div>
+                 <div>
+                    <span>説明文</span>
+                    <p>${bookDetailsInfo.descripsion}</p>
                 </div>
             </div>
         </div>
