@@ -97,7 +97,7 @@ public class AddBooksController {
        //ArrayListを準備
       ArrayList<String>lists=new ArrayList<String>();
       
-    
+    //登録条件
        if(title.isEmpty() || author.isEmpty() || publisher.isEmpty() ||  publishDate.isEmpty()) {
     	  lists.add ("必須");
     	  
