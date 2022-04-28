@@ -45,11 +45,11 @@ public class BooksService {
      * @param bookId 書籍ID
      * @return 書籍情報
      */
-    public BookDetailsInfo getBookInfo(int bookId) {
+    public BookDetailsInfo getBookInfo(int bookid) {
 
         // JSPに渡すデータを設定する
         String sql = "SELECT * FROM books where id ="
-                + bookId;
+                + bookid;
 
         BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
 
@@ -78,8 +78,8 @@ public class BooksService {
 
         jdbcTemplate.update(sql);
     }
-    public void deleteBook(int bookId) {
-    	  String sql ="delete from books where id="+bookId;
+    public void deleteBook(int bookid) {
+    	  String sql ="delete from books where id="+bookid;
     	  
     	   jdbcTemplate.update(sql);
     }
@@ -94,8 +94,28 @@ public class BooksService {
     	
     }
     
-    
-    
-}
 
-
+	  
+	  public void updateBook(BookDetailsInfo bookInfo) {
+			String sql;
+			if (bookInfo.getThumbnailUrl() == null) {
+				sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
+						+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
+						+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
+						+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
+			} else {
+				sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
+						+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
+						+ "' , thumbnail_url ='" + bookInfo.getThumbnailUrl() + "', thumbnail_name ='"
+						+ bookInfo.getThumbnailName() + "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn()
+				+ "', descripsion = '" + bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
+				
+				
+			}
+             
+			jdbcTemplate.update(sql);
+		}
+  }
+		
+    	
+    
