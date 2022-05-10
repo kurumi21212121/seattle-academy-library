@@ -126,8 +126,17 @@ public class BooksService {
 		jdbcTemplate.update(sql);
 
 }
+	public void returnBook(int bookId) {
+
+		String sql="delete from rentbooks where book_id=" + bookId;
+		jdbcTemplate.update(sql);}
+	
 	public int count() {
      String sql="select count (*) from rentbooks";
 		return jdbcTemplate.queryForObject(sql,int.class);
+		}
+	public int countreturn(int bookId) {
+	     String sql="select count (*) from rentbooks where book_id=" + bookId;
+			return jdbcTemplate.queryForObject(sql,int.class);
 }
 }
