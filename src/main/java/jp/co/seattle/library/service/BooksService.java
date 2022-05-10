@@ -26,6 +26,8 @@ public class BooksService {
 	private JdbcTemplate jdbcTemplate;
 
 	/**
+	 * 
+	 * 
 	 * 書籍リストを取得する
 	 *
 	 * @return 書籍リスト
@@ -87,28 +89,32 @@ public class BooksService {
 
 	}
 
-	/**
-	 * 
-	 * 書籍情報を更新する
-	 * 
-	 * @param locale       ローケル情報
-	 * @param title        書籍名
-	 * @param author       著者名
-	 * @param publisher    出版社
-	 * @param publish_date 出版日
-	 * @param file         サムネファイル
-	 * @palam model モデル
-	 * @param isbn コード
-	 * @param bio  説明文
-	 * @param id   書籍ID
-	 * @return 遷移先画面
+	/*書籍を更新する
+	 *  @param bookInfo 書籍情報
+	 
+	 */
+	public void updateBook(BookDetailsInfo bookInfo) {
+		String sql;
+
+			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
+					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
+					+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
+					+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
+	
+
+		jdbcTemplate.update(sql);
+	}
+	/*書籍を一括登録する
+	 * @param bookInfo 書籍情報
+	
 	 */
 
-	public void updateBook(BookDetailsInfo bookInfo) {
-		String sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
-				+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
-				+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
-				+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
+	public void bulkRegist(BookDetailsInfo bookInfo) {
+
+		String sql = "INSERT INTO books (title, author,publisher, thumbnail_url, publish_date, isbn, reg_date, upd_date) VALUES ('"
+				+ bookInfo.getTitle() + "','" + bookInfo.getAuthor() + "','" + bookInfo.getPublisher() + "','"
+				+ bookInfo.getThumbnailUrl() + "','" + bookInfo.getPublishDate() + "','" + bookInfo.getIsbn() + "',"
+				+ "now()," + "now())";
 
 		jdbcTemplate.update(sql);
 	}
