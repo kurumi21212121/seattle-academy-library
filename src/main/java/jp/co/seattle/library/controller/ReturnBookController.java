@@ -43,10 +43,7 @@ public class ReturnBookController {
         
         if(count2==1) {
         	  booksService.returnBook(bookId);
-        }
-             
-        
-      if (count2==0) {
+        } else{
      	model.addAttribute("errorMessage","貸し出されていません");
       } 
       model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
