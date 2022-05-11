@@ -90,24 +90,25 @@ public class BooksService {
 
 	}
 
+	/*書籍を更新する
+	 *  @param bookInfo 書籍情報
+	 
+	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
 		String sql;
-		if (bookInfo.getThumbnailUrl() == null) {
+
 			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
 					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
 					+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
 					+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-		} else {
-			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
-					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
-					+ "' , thumbnail_url ='" + bookInfo.getThumbnailUrl() + "', thumbnail_name ='"
-					+ bookInfo.getThumbnailName() + "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn()
-					+ "', descripsion = '" + bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-
-		}
+	
 
 		jdbcTemplate.update(sql);
 	}
+	/*書籍を一括登録する
+	 * @param bookInfo 書籍情報
+	
+	 */
 
 	public void bulkRegist(BookDetailsInfo bookInfo) {
 
