@@ -38,7 +38,7 @@ public class RentController {
             Model model) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
-        booksService.count();
+        
         int count= booksService.count();
         booksService.rentBook(bookId);
        int size=booksService.count();
