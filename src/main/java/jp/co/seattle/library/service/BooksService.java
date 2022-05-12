@@ -24,6 +24,7 @@ public class BooksService {
 	final static Logger logger = LoggerFactory.getLogger(BooksService.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 
 	/**
 	 * 
@@ -118,5 +119,29 @@ public class BooksService {
 
 		jdbcTemplate.update(sql);
 	}
+	
+	/**
+	 * rentbooksのbook_idに登録する
+	 *
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	
+	
+	public void rentBook(int bookId) {
 
+		String sql="insert into rentbooks(book_id) select " + bookId + " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
+		jdbcTemplate.update(sql);
+
+}
+	/**
+	 * rentbooksのbook_idをカウントする
+	 *
+	 * @param 
+	 * @return 書籍情報
+	 */
+	public int count() {
+     String sql="select count (*) from rentbooks";
+		return jdbcTemplate.queryForObject(sql,int.class);
+}
 }
