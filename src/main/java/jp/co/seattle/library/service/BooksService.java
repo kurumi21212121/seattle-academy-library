@@ -139,4 +139,12 @@ public class BooksService {
 	     String sql="select count (*) from rentbooks where book_id=" + bookId;
 			return jdbcTemplate.queryForObject(sql,int.class);
 }
+	public BookDetailsInfo getBookInfo2(int bookId) {
+
+		// JSPに渡すデータを設定する
+		String sql = "SELECT * FROM books left join rentbooks ON books.id = rentbooks.book_id WHERE books.id  = " + bookId;
+		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+
+		return bookDetailsInfo;
+	}
 }
