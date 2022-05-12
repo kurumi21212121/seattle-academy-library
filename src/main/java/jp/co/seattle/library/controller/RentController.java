@@ -39,14 +39,15 @@ public class RentController {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
         booksService.count();
-        int count1= booksService.count();
+        int count= booksService.count();
         booksService.rentBook(bookId);
-       int count2=booksService.count();
+       int size=booksService.count();
         
-      if (count1==count2) {
+      if (count==size) {
      	model.addAttribute("errorMessage","貸し出し済みです");
       	 }
       model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
       return "details";
     }
+    
 }
