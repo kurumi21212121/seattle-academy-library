@@ -11,13 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.co.seattle.library.service.BooksService;
+
 /**
  * 削除コントローラー
  */
 @Controller //APIの入り口
 public class DeleteBookController {
     final static Logger logger = LoggerFactory.getLogger(DeleteBookController.class);
-
+    
     /**
      * 対象書籍を削除する
      *
@@ -33,8 +35,10 @@ public class DeleteBookController {
             @RequestParam("bookId") Integer bookId,
             Model model) {
         logger.info("Welcome delete! The client locale is {}.", locale);
-
-        return "";
+      
+        model.addAttribute("bookDetailsInfo",BooksService.deletebook(bookId));
+	
+        return "home";
 
     }
 
