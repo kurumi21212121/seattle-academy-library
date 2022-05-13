@@ -134,6 +134,11 @@ public class BooksService {
 		jdbcTemplate.update(sql);
 
 }
+	public void returnBook(int bookId) {
+		String sql = "delete from rentbooks where book_id =" + bookId;
+		jdbcTemplate.update(sql);
+	}
+	
 
 	public int count() {
      String sql="select count (*) from rentbooks";
