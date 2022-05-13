@@ -27,9 +27,12 @@
                         <label class="label">メールアドレス</label> <input type="email" class="input" id="email" name="email" autocomplete="off" required> 
                         <label class="label">パスワード</label> <input type="password" class="input" id="password" name="password" required> 
                         <label class="label">パスワード（確認用）</label> <input type="password" class="input" id="passwordForCheck" name="passwordForCheck" required>
-                        <c:if test="${!empty error}">
-                        <p>${error}</p>
+                      <c:if test="${!empty error}">
+                          <div class="error">
+                          <p>${error}</p>
+                           </div>
                         </c:if>
+                        </div>
                          <input type="submit" class="button primary" value="作成する">
                     </form>
                 </div>
