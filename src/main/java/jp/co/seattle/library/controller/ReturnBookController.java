@@ -38,10 +38,10 @@ public class ReturnBookController {
             Model model) {
         // デバッグ用ログ
         logger.info("Welcome detailsControler.java! The client locale is {}.", locale);
-        int count2=booksService.countreturn(bookId);
+        int count=booksService.countreturn(bookId);
       
         
-        if(count2==1) {
+        if(count==1) {
         	  booksService.returnBook(bookId);
         } else{
      	model.addAttribute("errorMessage","貸し出されていません");

@@ -133,13 +133,21 @@ public class BooksService {
 		String sql="insert into rentbooks(book_id) select " + bookId + " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 
+		 /* @param bookId
+		 * @return 書籍情報
+		 */
 }
 	public void returnBook(int bookId) {
 		String sql = "delete from rentbooks where book_id =" + bookId;
 		jdbcTemplate.update(sql);
 	}
 	
+	 /*book_idに値が入っているかどうか
+	  *  @param 
+	 * @return 書籍情報
+	 */
 
+	
 	public int count() {
      String sql="select count (*) from rentbooks";
 		return jdbcTemplate.queryForObject(sql,int.class);
