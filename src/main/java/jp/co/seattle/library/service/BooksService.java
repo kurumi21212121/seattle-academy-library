@@ -90,24 +90,25 @@ public class BooksService {
 
 	}
 
+	/*書籍を更新する
+	 *  @param bookInfo 書籍情報
+	 
+	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
 		String sql;
-		if (bookInfo.getThumbnailUrl() == null) {
+
 			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
 					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
 					+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
 					+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-		} else {
-			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
-					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
-					+ "' , thumbnail_url ='" + bookInfo.getThumbnailUrl() + "', thumbnail_name ='"
-					+ bookInfo.getThumbnailName() + "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn()
-					+ "', descripsion = '" + bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-
-		}
+	
 
 		jdbcTemplate.update(sql);
 	}
+	/*書籍を一括登録する
+	 * @param bookInfo 書籍情報
+	
+	 */
 
 	public void bulkRegist(BookDetailsInfo bookInfo) {
 
@@ -119,17 +120,33 @@ public class BooksService {
 		jdbcTemplate.update(sql);
 	}
 	
-
+	/**
+	 * rentbooksのbook_idに登録する
+	 *
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	
+	
 	public void rentBook(int bookId) {
 
 		String sql="insert into rentbooks(book_id) select " + bookId + " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
 		jdbcTemplate.update(sql);
 
+		 /* @param bookId
+		 * @return 書籍情報
+		 */
 }
 	public void returnBook(int bookId) {
+		String sql = "delete from rentbooks where book_id =" + bookId;
+		jdbcTemplate.update(sql);
+	}
+	
+	 /*book_idに値が入っているかどうか
+	  *  @param 
+	 * @return 書籍情報
+	 */
 
-		String sql="delete from rentbooks where book_id=" + bookId;
-		jdbcTemplate.update(sql);}
 	
 	public int count() {
      String sql="select count (*) from rentbooks";
