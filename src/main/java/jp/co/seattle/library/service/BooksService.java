@@ -143,7 +143,7 @@ public class BooksService {
 	/**
 	 * 書籍を検索する
 	 *
-	 * @param bookInfo 書籍情報
+	 * @param title 
 	 */
 	
 	public List<BookInfo> searchBook(String title) {
