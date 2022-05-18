@@ -49,15 +49,7 @@ public class BooksService {
 	 * @param bookId 書籍ID
 	 * @return 書籍情報
 	 */
-	public BookDetailsInfo getBookInfo(int bookid) {
-
-		// JSPに渡すデータを設定する
-		String sql = "SELECT * FROM books where id =" + bookid;
-
-		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
-
-		return bookDetailsInfo;
-	}
+	
 
 	/**
 	 * 書籍を登録する
@@ -156,4 +148,12 @@ public class BooksService {
 	     String sql="select count (*) from rentbooks where book_id=" + bookId;
 			return jdbcTemplate.queryForObject(sql,int.class);
 }
+	public BookDetailsInfo getBookInfo(int bookId) {
+
+		// JSPに渡すデータを設定する
+		String sql = "SELECT *,case when book_id is null then '貸出可' else '貸出不可' end as status from books left join rentbooks ON books.id = rentbooks.book_id WHERE books.id="+bookId;
+		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
+    
+		return bookDetailsInfo;
+	}
 }
