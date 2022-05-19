@@ -40,7 +40,7 @@ public class DeleteBookController {
         logger.info("Welcome delete! The client locale is {}.", locale);
 
         int count=booksService.countreturn(bookId);
-        if(count==1) {
+        if(count<=1) {
         	model.addAttribute("bookDetailsInfo", booksService.getBookInfo(bookId));
 			 model.addAttribute("errorMessage","削除できません");
         	 return "details";
