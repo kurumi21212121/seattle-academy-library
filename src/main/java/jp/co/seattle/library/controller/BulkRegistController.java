@@ -27,15 +27,27 @@ public class BulkRegistController {
 	final static Logger logger = (Logger) LoggerFactory.getLogger(BulkRegistController.class);
 	@Autowired
 	private BooksService booksService;
-
+	/**
+ 	 * 書籍情報を登録する
+ 	 * @param locale ロケール情報
+ 	 * @param bookId bookId
+ 	 * @param model モデル
+ 	 * * @return 遷移先画面
+ 	 **/
+	
 	@RequestMapping(value = "/bulkRegist", method = RequestMethod.GET) // value＝actionで指定したパラメータ
 	public String bulkRegist(Model model) {
 		return "bulkRegist";
 	}
-
+	/**
+ 	 * 書籍情報を登録する(CSV一括登録)
+ 	 * @param uploadFile CSVファイル
+ 	 * @param model モデル
+ 	 * @return 遷移先画面
+ 	 **/
 	@Transactional
 	@RequestMapping(value = "/bulkRegist", method = RequestMethod.POST)
-	public String bulkregistbook(Locale locale, @RequestParam("file") MultipartFile file, Model model) {
+	public String bulkRegist(Locale locale, @RequestParam("file") MultipartFile file, Model model) {
 		try (BufferedReader br = new BufferedReader(
 				new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
 			String line;
@@ -51,12 +63,6 @@ public class BulkRegistController {
 			while ((line = br.readLine()) != null) {
 				final String[] inputvalue = line.split(",", -1);
 
-				BookDetailsInfo bookInfo = new BookDetailsInfo();
-				bookInfo.setTitle(inputvalue[0]);
-				bookInfo.setAuthor(inputvalue[1]);
-				bookInfo.setPublisher(inputvalue[2]);
-				bookInfo.setPublishDate(inputvalue[3]);
-				bookInfo.setIsbn(inputvalue[4]);
 
 				// 行数カウントインクリメント
 				lineCount++;
@@ -74,7 +80,16 @@ public class BulkRegistController {
 				{
 				
 				errorMessages.add(lineCount + "行目でバリデーションエラーが発生しました");
-				} else {
+				} 
+				
+				else {
+					BookDetailsInfo bookInfo = new BookDetailsInfo();
+					bookInfo.setTitle(inputvalue[0]);
+					bookInfo.setAuthor(inputvalue[1]);
+					bookInfo.setPublisher(inputvalue[2]);
+					bookInfo.setPublishDate(inputvalue[3]);
+					bookInfo.setIsbn(inputvalue[4]);
+					
 					bookLists.add(bookInfo);
 				}
 

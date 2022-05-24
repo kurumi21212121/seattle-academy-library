@@ -85,24 +85,25 @@ public class BooksService {
 
 	}
 
+	/*書籍を更新する
+	 *  @param bookInfo 書籍情報
+	 
+	 */
 	public void updateBook(BookDetailsInfo bookInfo) {
 		String sql;
-		if (bookInfo.getThumbnailUrl() == null) {
+
 			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
 					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
 					+ "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn() + "', descripsion= '"
 					+ bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-		} else {
-			sql = "update books set title ='" + bookInfo.getTitle() + "', author ='" + bookInfo.getAuthor()
-					+ "' , publisher ='" + bookInfo.getPublisher() + "', publish_date ='" + bookInfo.getPublishDate()
-					+ "' , thumbnail_url ='" + bookInfo.getThumbnailUrl() + "', thumbnail_name ='"
-					+ bookInfo.getThumbnailName() + "' , upd_date = 'now()'" + ",isbn = '" + bookInfo.getIsbn()
-					+ "', descripsion = '" + bookInfo.getDescripsion() + "' where id =" + bookInfo.getBookId() + ";";
-
-		}
+	
 
 		jdbcTemplate.update(sql);
 	}
+	/*書籍を一括登録する
+	 * @param bookInfo 書籍情報
+	
+	 */
 
 	public void bulkRegist(BookDetailsInfo bookInfo) {
 
@@ -114,16 +115,29 @@ public class BooksService {
 		jdbcTemplate.update(sql);
 	}
 	
-
+	/**
+	 * rentbooksのbook_idに登録する
+	 *
+	 * @param bookId 書籍ID
+	 * @return 書籍情報
+	 */
+	
+	
 	public void rentBook(int bookId) {
 
 		String sql="Insert into rentbooks(rent_date,book_id) values (now(),"+bookId+") on conflict(book_id)do update set rent_date =now(),return_date = null";
 		jdbcTemplate.update(sql);
 }
 	public void returnBook(int bookId) {
-
-		String sql="update rentbooks set rent_date=null,return_date=now() where rentbooks.book_id="+bookId+" and return_date is null";
+		
+	
+	 /*book_idに値が入っているかどうか
+	  *  @param 
+	 * @return 書籍情報
+	 */
+     String sql="update rentbooks set rent_date=null,return_date=now() where rentbooks.book_id="+bookId+" and return_date is null";
 		jdbcTemplate.update(sql);}
+
 	
 	public int count() {
      String sql="select count (rent_date) from rentbooks";
@@ -136,7 +150,10 @@ public class BooksService {
 	public BookDetailsInfo getBookInfo(int bookId) {
 
 		// JSPに渡すデータを設定する
+
 		String sql ="SELECT *,case when rent_date is null then '貸出可' else '貸出不可' end as status from books left join rentbooks ON books.id = rentbooks.book_id WHERE books.id="+bookId;
+
+	
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
     
 		return bookDetailsInfo;
