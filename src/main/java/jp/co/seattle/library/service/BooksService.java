@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import jp.co.seattle.library.dto.BookDetailsInfo;
 import jp.co.seattle.library.dto.BookInfo;
+import jp.co.seattle.library.dto.DateBookinfo;
 import jp.co.seattle.library.rowMapper.BookDetailsInfoRowMapper;
 import jp.co.seattle.library.rowMapper.BookInfoRowMapper;
+import jp.co.seattle.library.rowMapper.DateBookinfoRowMapper;
 
 /**
  * 書籍サービス
@@ -24,6 +26,7 @@ public class BooksService {
 	final static Logger logger = LoggerFactory.getLogger(BooksService.class);
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
 	
 
 	/**
@@ -114,27 +117,26 @@ public class BooksService {
 
 	public void rentBook(int bookId) {
 
-		String sql="insert into rentbooks(book_id) select " + bookId + " where NOT EXISTS (select book_id from rentbooks where book_id=" + bookId + ")";
+		String sql="Insert into rentbooks(rent_date,book_id) values (now(),"+bookId+") on conflict(book_id)do update set rent_date =now(),return_date = null";
 		jdbcTemplate.update(sql);
-
 }
 	public void returnBook(int bookId) {
 
-		String sql="delete from rentbooks where book_id=" + bookId;
+		String sql="update rentbooks set rent_date=null,return_date=now() where rentbooks.book_id="+bookId+" and return_date is null";
 		jdbcTemplate.update(sql);}
 	
 	public int count() {
-     String sql="select count (*) from rentbooks";
+     String sql="select count (rent_date) from rentbooks";
 		return jdbcTemplate.queryForObject(sql,int.class);
 		}
 	public int countreturn(int bookId) {
-	     String sql="select count (*) from rentbooks where book_id=" + bookId;
+	     String sql="select count (rent_date) from rentbooks where book_id=" + bookId;
 			return jdbcTemplate.queryForObject(sql,int.class);
 }
 	public BookDetailsInfo getBookInfo(int bookId) {
 
 		// JSPに渡すデータを設定する
-		String sql = "SELECT * FROM books left join rentbooks ON books.id = rentbooks.book_id WHERE books.id  = " + bookId;
+		String sql ="SELECT *,case when rent_date is null then '貸出可' else '貸出不可' end as status from books left join rentbooks ON books.id = rentbooks.book_id WHERE books.id="+bookId;
 		BookDetailsInfo bookDetailsInfo = jdbcTemplate.queryForObject(sql, new BookDetailsInfoRowMapper());
     
 		return bookDetailsInfo;
@@ -157,5 +159,23 @@ public class BooksService {
 
 	}
 	
+	public void updaterentBook(int bookId) {
 
-}
+		String sql="update rentbooks set return_date=null,rent_date=now() where rentbooks.book_id="+bookId+" and rent_date is null";
+		jdbcTemplate.update(sql);
+	}
+	
+	public List<DateBookinfo>datebooklist() {
+
+		// TODO 取得したい情報を取得するようにSQLを修正
+		List<DateBookinfo> DateBookList = jdbcTemplate.query(
+				"SELECT books.id,title,rent_date,return_date FROM books inner join rentbooks ON books.id = rentbooks.book_id",
+				new DateBookinfoRowMapper());
+
+		return DateBookList;
+	}
+
+
+	}
+	
+
